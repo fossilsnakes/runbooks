@@ -58,12 +58,12 @@ jobs:
       with:
         path: runbooks
         repository: deadsnakes/runbooks
-    - name: import gpg key
-      run: |
-        install --directory ~/.gnupg --mode 700
-        base64 -d <<< '${{ secrets.GPG_PUBLIC }}' > ~/.gnupg/pubring.gpg
-        base64 -d <<< '${{ secrets.GPG_SECRET }}' > ~/.gnupg/secring.gpg
-        chmod 600 ~/.gnupg/*
+    # - name: import gpg key
+    #   run: |
+    #     install --directory ~/.gnupg --mode 700
+    #     base64 -d <<< '${{ secrets.GPG_PUBLIC }}' > ~/.gnupg/pubring.gpg
+    #     base64 -d <<< '${{ secrets.GPG_SECRET }}' > ~/.gnupg/secring.gpg
+    #     chmod 600 ~/.gnupg/*
     - name: materialize
       run: runbooks/meta-gbp materialize ${{ matrix.name }}
     - name: build
