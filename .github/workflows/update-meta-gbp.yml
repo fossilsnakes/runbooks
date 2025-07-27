@@ -20,7 +20,7 @@ jobs:
     - name: clone target
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: clone runbooks
       uses: actions/checkout@v3
       with:
