@@ -69,7 +69,7 @@ def main() -> NoReturn:
         # *_gpg_volumes(),
         '-v', f'{pwd}:/code:ro',
         '-v', f'{pwd}/../dist:/dist:rw',
-        f'ghcr.io/deadsnakes/{dist}', 'bash', '-euxc', prog,
+        f'ghcr.io/erictendian/{dist}', 'bash', '-euxc', prog,
     )
     os.execvp(cmd[0], cmd)
 
