@@ -53,7 +53,7 @@ def main() -> NoReturn:
         ' --git-pristine-tar-commit '
         "--git-upstream-tag='deadsnakes/v%(version%~%_)s'"
     )
-    extra = '--git-builder="debuild -S -sa"' if args.source else ''
+    extra = '--git-builder="debuild -S -sa -us -uc"' if args.source else ''
     prog = (
         f'apt-get update -qq && '
         f'mk-build-deps --install --remove --tool "apt-get --yes" /code/debian/control && '  # noqa: E501

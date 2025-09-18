@@ -32,7 +32,7 @@ def main() -> NoReturn:
         *_user(),
         '--volume', f'{os.getcwd()}:/tmp/src:rw',
         *(f'--volume={volume}' for volume in args.volumes),
-        'ghcr.io/deadsnakes/tools', *rest,
+        'ghcr.io/erictendian/tools', *rest,
     )
     os.execvp(cmd[0], cmd)
 
