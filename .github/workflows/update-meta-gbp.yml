@@ -72,5 +72,10 @@ jobs:
       run: runbooks/quick-test --distrib-codename ${{ matrix.name }} --dist-dir dist --src-dir work
     - name: build source package
       run: runbooks/meta-gbp build --source
-    - name: upload package
-      run: runbooks/meta-gbp upload
+    # - name: upload package
+    #   run: runbooks/meta-gbp upload
+    - name: upload dist artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-${{ matrix.name }}
+        path: dist/
