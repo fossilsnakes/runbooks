@@ -13,7 +13,7 @@ def main() -> int:
 
     for filename in os.listdir('dockerfiles'):
         _, name = filename.split('.')
-        tag = f'ghcr.io/deadsnakes/{name}:latest'
+        tag = f'ghcr.io/erictendian/{name}:latest'
         print(f' {tag} '.center(79, '='), flush=True)
 
         if args.event == 'push':
