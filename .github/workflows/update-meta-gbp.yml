@@ -68,6 +68,11 @@ jobs:
       run: runbooks/meta-gbp materialize ${{ matrix.name }}
     - name: build
       run: runbooks/meta-gbp build
+    - name: upload debs
+      uses: actions/upload-artifact@v4
+      with:
+        name: debs-${{ matrix.name }}
+        path: dist/
     - name: test
       run: runbooks/quick-test --distrib-codename ${{ matrix.name }} --dist-dir dist --src-dir work
     - name: build source package
