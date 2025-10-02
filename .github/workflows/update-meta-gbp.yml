@@ -13,28 +13,28 @@ jobs:
     steps:
     - name: configure git
       run: |
-        git config --global user.name 'Anthony Sottile (deadsnakes)'
-        git config --global user.email 'asottile+deadsnakes@umich.edu'
-        echo 'DEBFULLNAME=Anthony Sottile (deadsnakes)' >> $GITHUB_ENV
-        echo 'DEBEMAIL=asottile+deadsnakes@umich.edu' >> $GITHUB_ENV
+        git config --global user.name 'Andrew J. Erickson'
+        git config --global user.email 'aerickson@gmail.com'
+        echo 'DEBFULLNAME=Andrew J. Erickson' >> $GITHUB_ENV
+        echo 'DEBEMAIL=aerickson@gmail.com' >> $GITHUB_ENV
     - name: clone target
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: clone runbooks
       uses: actions/checkout@v3
       with:
         path: runbooks
-        repository: deadsnakes/runbooks
+        repository: fossilsnakes/runbooks
     - name: pull upstream cpython
       run: runbooks/meta-gbp update --no-interactive
     - name: push changes
       id: push
       run: |
-        if [ "$(git rev-list HEAD --count)" -eq 2 ]; then
+        # if [ "$(git rev-list HEAD --count)" -eq 2 ]; then
             git push origin HEAD
             echo "rev=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-        fi
+        # fi
   build:
     needs: update
     if: needs.update.outputs.rev
@@ -45,10 +45,10 @@ jobs:
     steps:
     - name: configure git
       run: |
-        git config --global user.name 'Anthony Sottile (deadsnakes)'
-        git config --global user.email 'asottile+deadsnakes@umich.edu'
-        echo 'DEBFULLNAME=Anthony Sottile (deadsnakes)' >> $GITHUB_ENV
-        echo 'DEBEMAIL=asottile+deadsnakes@umich.edu' >> $GITHUB_ENV
+        git config --global user.name 'Andrew J. Erickson'
+        git config --global user.email 'aerickson@gmail.com'
+        echo 'DEBFULLNAME=Andrew J. Erickson' >> $GITHUB_ENV
+        echo 'DEBEMAIL=aerickson@gmail.com' >> $GITHUB_ENV
     - name: clone target
       uses: actions/checkout@v3
       with:
@@ -57,20 +57,30 @@ jobs:
       uses: actions/checkout@v3
       with:
         path: runbooks
-        repository: deadsnakes/runbooks
-    - name: import gpg key
-      run: |
-        install --directory ~/.gnupg --mode 700
-        base64 -d <<< '${{ secrets.GPG_PUBLIC }}' > ~/.gnupg/pubring.gpg
-        base64 -d <<< '${{ secrets.GPG_SECRET }}' > ~/.gnupg/secring.gpg
-        chmod 600 ~/.gnupg/*
+        repository: fossilsnakes/runbooks
+    # - name: import gpg key
+    #   run: |
+    #     install --directory ~/.gnupg --mode 700
+    #     base64 -d <<< '${{ secrets.GPG_PUBLIC }}' > ~/.gnupg/pubring.gpg
+    #     base64 -d <<< '${{ secrets.GPG_SECRET }}' > ~/.gnupg/secring.gpg
+    #     chmod 600 ~/.gnupg/*
     - name: materialize
       run: runbooks/meta-gbp materialize ${{ matrix.name }}
     - name: build
       run: runbooks/meta-gbp build
+    - name: upload debs
+      uses: actions/upload-artifact@v4
+      with:
+        name: debs-${{ matrix.name }}
+        path: dist/
     - name: test
       run: runbooks/quick-test --distrib-codename ${{ matrix.name }} --dist-dir dist --src-dir work
     - name: build source package
       run: runbooks/meta-gbp build --source
-    - name: upload package
-      run: runbooks/meta-gbp upload
+    # - name: upload package
+    #   run: runbooks/meta-gbp upload
+    - name: upload dist artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-${{ matrix.name }}
+        path: dist/
