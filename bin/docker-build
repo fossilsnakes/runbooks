@@ -5,7 +5,7 @@ import argparse
 import os.path
 import subprocess
 
-# aerickson: no op to trigger push action
+# aerickson: no op to trigger push action, try 2
 
 def main() -> int:
     parser = argparse.ArgumentParser()
